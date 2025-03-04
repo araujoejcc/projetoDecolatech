@@ -3,7 +3,7 @@
 ```mermaid
 classDiagram
     class User {
-        -int id
+        -long id
         -String name
         -String email
         -String password
@@ -13,7 +13,7 @@ classDiagram
     }
     
     class List {
-        -int id
+        -long id
         -String title
         -Date creationDate
         -boolean archived
@@ -25,7 +25,7 @@ classDiagram
     }
     
     class Task {
-        -int id
+        -long id
         -String title
         -String description
         -Date creationDate
@@ -48,7 +48,7 @@ classDiagram
     
 
     class Notification {
-        -int id
+        -long id
         -String message
         -Date dateTime
         -boolean read
