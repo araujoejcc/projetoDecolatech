@@ -1,0 +1,61 @@
+package br.com.decolatech.projetoDecolatech.domain.models;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+import java.util.Date;
+
+@Entity
+public class Notification {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String message;
+    private Date dateTime;
+    private boolean read;
+
+    public Notification() {
+    }
+
+    public Notification(int id, String message, Date dateTime, boolean read) {
+        this.id = id;
+        this.message = message;
+        this.dateTime = dateTime;
+        this.read = read;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+}
