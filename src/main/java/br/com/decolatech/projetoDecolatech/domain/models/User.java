@@ -14,7 +14,7 @@ public class User {
     private String password;
 
     @OneToOne (cascade = CascadeType.ALL)
-    private TaskList todoTaskList;
+    private TaskList todoList;
 
     public User() {
     }
@@ -59,11 +59,11 @@ public class User {
     }
 
     public TaskList getTodoList() {
-        return todoTaskList;
+        return todoList;
     }
 
     public void setTodoList(TaskList todoTaskList) {
-        this.todoTaskList = todoTaskList;
+        this.todoList = todoTaskList;
     }
 
 }

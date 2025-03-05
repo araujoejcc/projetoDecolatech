@@ -3,12 +3,14 @@ package br.com.decolatech.projetoDecolatech.service.impl;
 import br.com.decolatech.projetoDecolatech.domain.models.TaskList;
 import br.com.decolatech.projetoDecolatech.domain.models.User;
 import br.com.decolatech.projetoDecolatech.domain.repository.UserRepository;
+import br.com.decolatech.projetoDecolatech.exceptions.DuplicateResourceException;
+import br.com.decolatech.projetoDecolatech.exceptions.ResourceNotFoundException;
+import br.com.decolatech.projetoDecolatech.exceptions.UserOperationException;
 import br.com.decolatech.projetoDecolatech.service.TaskListService;
 import br.com.decolatech.projetoDecolatech.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,7 +25,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
     }
 
     @Override
@@ -34,18 +37,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object findByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchElementException("User not found with email: " + email));
+                .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
     }
 
     @Override
     public User create(User userToCreate) {
+        // Check if ID already exists
         if (userToCreate.getId() != null && userRepository.existsById(userToCreate.getId())) {
-            throw new IllegalArgumentException("This user ID already exists.");
+            throw new DuplicateResourceException("User", "id", userToCreate.getId());
         }
         
         // Check if email is already in use
         if (userRepository.findByEmail(userToCreate.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("This email is already in use.");
+            throw new DuplicateResourceException("User", "email", userToCreate.getEmail());
         }
         
         return userRepository.save(userToCreate);
@@ -62,7 +66,7 @@ public class UserServiceImpl implements UserService {
         if (user.getEmail() != null && !user.getEmail().equals(existingUser.getEmail())) {
             // Check if new email is already in use by another user
             userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
-                throw new IllegalArgumentException("This email is already in use.");
+                throw new DuplicateResourceException("User", "email", user.getEmail());
             });
             existingUser.setEmail(user.getEmail());
         }
@@ -76,6 +80,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
+        // Verify user exists before deletion
         User user = findById(id);
         userRepository.delete(user);
     }
@@ -88,8 +93,12 @@ public class UserServiceImpl implements UserService {
         if (taskList.getId() == null) {
             taskList = taskListService.create(taskList);
         } else {
-            // Verify that the task list exists
-            taskListService.findById(taskList.getId());
+            try {
+                // Verify that the task list exists
+                taskListService.findById(taskList.getId());
+            } catch (Exception e) {
+                throw new ResourceNotFoundException("TaskList", "id", taskList.getId());
+            }
         }
         
         user.setTodoList(taskList);
@@ -99,7 +108,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User assignTaskList(Long userId, Long taskListId) {
         User user = findById(userId);
-        TaskList taskList = taskListService.findById(taskListId);
+        
+        TaskList taskList;
+        try {
+            taskList = taskListService.findById(taskListId);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("TaskList", "id", taskListId);
+        }
         
         user.setTodoList(taskList);
         return userRepository.save(user);
@@ -112,13 +127,19 @@ public class UserServiceImpl implements UserService {
         // Store the task list ID before removing it
         TaskList taskList = user.getTodoList();
         
+        if (taskList == null) {
+            throw new UserOperationException("User does not have a task list assigned");
+        }
+        
         // Remove the task list from the user
         user.setTodoList(null);
         user = userRepository.save(user);
         
-        // Delete the orphaned task list if it exists
-        if (taskList != null) {
+        // Delete the orphaned task list
+        try {
             taskListService.delete(taskList.getId());
+        } catch (Exception e) {
+            throw new UserOperationException("Failed to delete task list with id: " + taskList.getId());
         }
         
         return user;
