@@ -1,6 +1,8 @@
 package br.com.decolatech.projetoDecolatech.domain.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 import java.util.List;
@@ -11,11 +13,15 @@ public class TaskList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Título é obrigatório")
+    @Size(min = 3, max = 100, message = "Título deve ter entre 3 e 100 caracteres")
     private String title;
+
     private Date CreationDate;
     private boolean arquived;
 
-    @OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Task> tasks;
 
     public TaskList() {

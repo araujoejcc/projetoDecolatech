@@ -2,6 +2,7 @@ package br.com.decolatech.projetoDecolatech.controller;
 
 import br.com.decolatech.projetoDecolatech.domain.models.Notification;
 import br.com.decolatech.projetoDecolatech.service.NotificationService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class NotificationController {
     }
 
     @PostMapping
-    public ResponseEntity<Notification> createNotification(@RequestBody Notification notification) {
+    public ResponseEntity<Notification> createNotification(@Valid @RequestBody Notification notification) {
         return ResponseEntity.status(HttpStatus.CREATED).body(notificationService.create(notification));
     }
 

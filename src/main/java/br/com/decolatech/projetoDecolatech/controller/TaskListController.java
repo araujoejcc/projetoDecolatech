@@ -3,6 +3,7 @@ package br.com.decolatech.projetoDecolatech.controller;
 import br.com.decolatech.projetoDecolatech.domain.models.Task;
 import br.com.decolatech.projetoDecolatech.domain.models.TaskList;
 import br.com.decolatech.projetoDecolatech.service.TaskListService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +31,12 @@ public class TaskListController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskList> createTaskList(@RequestBody TaskList taskList) {
+    public ResponseEntity<TaskList> createTaskList(@Valid @RequestBody TaskList taskList) {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskListService.create(taskList));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskList> updateTaskList(@PathVariable Long id, @RequestBody TaskList taskList) {
+    public ResponseEntity<TaskList> updateTaskList(@PathVariable Long id, @Valid @RequestBody TaskList taskList) {
         return ResponseEntity.ok(taskListService.update(id, taskList));
     }
 
@@ -46,7 +47,7 @@ public class TaskListController {
     }
 
     @PostMapping("/{taskListId}/tasks")
-    public ResponseEntity<TaskList> addTaskToList(@PathVariable Long taskListId, @RequestBody Task task) {
+    public ResponseEntity<TaskList> addTaskToList(@PathVariable Long taskListId, @Valid @RequestBody Task task) {
         return ResponseEntity.ok(taskListService.addTask(taskListId, task));
     }
 

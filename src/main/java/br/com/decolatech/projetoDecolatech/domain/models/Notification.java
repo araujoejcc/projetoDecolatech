@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 
@@ -13,7 +15,11 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Mensagem é obrigatória")
+    @Size(max = 255, message = "Mensagem não pode exceder 255 caracteres")
     private String message;
+
     private Date dateTime;
     private boolean read;
 

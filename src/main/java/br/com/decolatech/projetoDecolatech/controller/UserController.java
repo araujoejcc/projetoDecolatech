@@ -3,6 +3,7 @@ package br.com.decolatech.projetoDecolatech.controller;
 import br.com.decolatech.projetoDecolatech.domain.models.TaskList;
 import br.com.decolatech.projetoDecolatech.domain.models.User;
 import br.com.decolatech.projetoDecolatech.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,12 +36,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
         return ResponseEntity.ok(userService.update(id, user));
     }
 
@@ -51,7 +52,7 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/tasklist")
-    public ResponseEntity<User> assignTaskList(@PathVariable Long userId, @RequestBody TaskList taskList) {
+    public ResponseEntity<User> assignTaskList(@PathVariable Long userId, @Valid @RequestBody TaskList taskList) {
         return ResponseEntity.ok(userService.assignTaskList(userId, taskList));
     }
 

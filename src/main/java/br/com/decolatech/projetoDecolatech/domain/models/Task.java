@@ -4,6 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 
@@ -13,11 +17,22 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Título é obrigatório")
+    @Size(min = 3, max = 100, message = "Título deve ter entre 3 e 100 caracteres")
     private String title;
+
+    @Size(max = 500, message = "Descrição não pode exceder 500 caracteres")
     private String description;
+
     private Date creationDate;
+
+    @FutureOrPresent(message = "A data de vencimento não pode ser no passado")
     private Date dueDate;
+
+    @NotNull(message = "Prioridade é obrigatória")
     private Priority priority;
+
     private boolean isCompleted;
 
     public Task() {

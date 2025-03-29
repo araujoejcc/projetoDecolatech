@@ -2,6 +2,7 @@ package br.com.decolatech.projetoDecolatech.controller;
 
 import br.com.decolatech.projetoDecolatech.domain.models.Task;
 import br.com.decolatech.projetoDecolatech.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +30,12 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<Task> createTask(@Valid @RequestBody Task task) {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskService.create(task));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @Valid @RequestBody Task task) {
         return ResponseEntity.ok(taskService.update(id, task));
     }
 
