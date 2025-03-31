@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         
-        user.setTodoList(taskList);
+        user.setTaskList(taskList);
         return userRepository.save(user);
     }
 
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotFoundException("TaskList", "id", taskListId);
         }
         
-        user.setTodoList(taskList);
+        user.setTaskList(taskList);
         return userRepository.save(user);
     }
 
@@ -125,14 +125,14 @@ public class UserServiceImpl implements UserService {
         User user = findById(userId);
         
         // Store the task list ID before removing it
-        TaskList taskList = user.getTodoList();
+        TaskList taskList = user.getTaskList();
         
         if (taskList == null) {
             throw new UserOperationException("User does not have a task list assigned");
         }
         
         // Remove the task list from the user
-        user.setTodoList(null);
+        user.setTaskList(null);
         user = userRepository.save(user);
         
         // Delete the orphaned task list
