@@ -14,8 +14,8 @@ public class TaskList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Título é obrigatório")
-    @Size(min = 3, max = 100, message = "Título deve ter entre 3 e 100 caracteres")
+    @NotBlank(message = "Title is mandatory")
+    @Size(min = 3, max = 100, message = "Title must have from 3 to 100 characters")
     private String title;
 
     private Date CreationDate;

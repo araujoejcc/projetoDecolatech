@@ -13,16 +13,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Nome é obrigatório")
-    @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
+    @NotBlank(message = "Name is mandatory")
+    @Size(min = 3, max = 100, message = "Name must have from 3 to 100 characters")
     private String name;
 
-    @NotBlank(message = "Email é obrigatório")
-    @Email(message = "Formato de email inválido")
+    @NotBlank(message = "E-mail is mandatory")
+    @Email(message = "E-mail format invalid")
     private String email;
 
-    @NotBlank(message = "Senha é obrigatória")
-    @Size(min = 6, message = "Senha deve ter no mínimo 6 caracteres")
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 6, message = "Passwod must contain at least 6 characters")
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL)

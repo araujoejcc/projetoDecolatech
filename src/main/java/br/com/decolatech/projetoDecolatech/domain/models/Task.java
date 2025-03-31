@@ -18,19 +18,19 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Título é obrigatório")
-    @Size(min = 3, max = 100, message = "Título deve ter entre 3 e 100 caracteres")
+    @NotBlank(message = "Title is mandatory")
+    @Size(min = 3, max = 100, message = "Title must have from 3 to 100 characters")
     private String title;
 
-    @Size(max = 500, message = "Descrição não pode exceder 500 caracteres")
+    @Size(max = 500, message = "Description cannot exceed 500 characters")
     private String description;
 
     private Date creationDate;
 
-    @FutureOrPresent(message = "A data de vencimento não pode ser no passado")
+    @FutureOrPresent(message = "Due date cannot be in the past")
     private Date dueDate;
 
-    @NotNull(message = "Prioridade é obrigatória")
+    @NotNull(message = "Priority is mandatory")
     private Priority priority;
 
     private boolean isCompleted;

@@ -16,8 +16,8 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Mensagem é obrigatória")
-    @Size(max = 255, message = "Mensagem não pode exceder 255 caracteres")
+    @NotBlank(message = "Message is mandatory")
+    @Size(max = 255, message = "Message cannot exceed 255 characters")
     private String message;
 
     private Date dateTime;
